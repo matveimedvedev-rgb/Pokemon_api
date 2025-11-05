@@ -12,9 +12,9 @@ Poken Casino is a simple and fun game where the player selects a Pokémon to bat
 Poken Casino is a game that combines the excitement of Pokémon battles with the unpredictability of casino play. Players choose a Pokémon to face off against the casino’s randomly selected Pokémon, and the winner is determined by comparing their base stats. The project aims to create an engaging, fair, and easy-to-play game that blends strategy and luck.
 
 ## API Selection
-**API Name:** [e.g., TMDB API]  
-**API Documentation:** [URL]  
-**Why this API?** [1-2 sentences]
+**API Name:** pokeapi
+**API Documentation:** https://pokeapi.co/docs/v2
+**Why this API?** PokeAPI offers free, no-auth, HTTPS access to rich, structured Pokémon data (base stats, types, abilities, sprites/artwork), which lets us fetch everything needed for this project.
 
 ### 2. GitHub Repository
 
