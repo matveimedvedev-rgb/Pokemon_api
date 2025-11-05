@@ -9,7 +9,7 @@
 Poken Casino is a simple and fun game where the player selects a Pokémon to battle against the casino’s randomly chosen Pokémon. The outcome of each battle is determined by comparing the Pokémon’s base stats, and points are awarded to the winner.
 
 ## Problem Statement
-[What problem are you solving? Who is this for?]
+Poken Casino is a game that combines the excitement of Pokémon battles with the unpredictability of casino play. Players choose a Pokémon to face off against the casino’s randomly selected Pokémon, and the winner is determined by comparing their base stats. The project aims to create an engaging, fair, and easy-to-play game that blends strategy and luck.
 
 ## API Selection
 **API Name:** [e.g., TMDB API]  
