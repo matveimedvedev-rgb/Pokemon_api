@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poken Casino - Pokemon Battle</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        
+        .error {
+            background: #fee;
+            color: #c33;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #fcc;
+        }
+        
+        .start-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .start-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .start-btn:active {
+            transform: translateY(0);
+        }
+        
+        .dice-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        
+        .dice-overlay.show {
+            display: flex;
+        }
+        
+        .dice-container {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .dice {
+            width: 100px;
+            height: 100px;
+            background: white;
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 60px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            animation: roll 1.5s infinite;
+        }
+        
+        @keyframes roll {
+            0%, 100% { transform: rotate(0deg) translateY(0); }
+            25% { transform: rotate(90deg) translateY(-10px); }
+            50% { transform: rotate(180deg) translateY(0); }
+            75% { transform: rotate(270deg) translateY(-10px); }
+        }
+        
+        .dice-text {
+            color: white;
+            font-size: 1.5em;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="dice-overlay" id="diceOverlay">
+        <div class="dice-container">
+            <div class="dice">🎲</div>
+            <div class="dice">🎲</div>
+            <div class="dice">🎲</div>
+        </div>
+        <div class="dice-text">Rolling for Pokemon...</div>
+    </div>
+    
+    <div class="container">
+        <h1>🎮 Poken Casino</h1>
+        <p class="subtitle">Pokemon Battle Arena</p>
+        
+        {% if error %}
+        <div class="error">{{ error }}</div>
+        {% endif %}
+        
+        <p style="margin: 30px 0; color: #555; line-height: 1.6;">
+            Choose your Pokemon and battle against a randomly selected opponent!<br>
+            The winner is determined by comparing base stats.
+        </p>
+        
+        <form method="POST" action="{{ url_for('start_battle') }}" id="startForm">
+            <button type="submit" class="start-btn">Start Battle ⚔️</button>
+        </form>
+    </div>
+    
+    <script>
+        document.getElementById('startForm').addEventListener('submit', function(e) {
+            document.getElementById('diceOverlay').classList.add('show');
+        });
+    </script>
+</body>
+</html>
+

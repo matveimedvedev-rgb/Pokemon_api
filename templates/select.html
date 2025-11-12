@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choose Your Pokemon - Poken Casino</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .pokemon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .pokemon-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        
+        .pokemon-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+        
+        .pokemon-card.selected {
+            border: 4px solid #667eea;
+            background: #f0f4ff;
+        }
+        
+        .pokemon-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .pokemon-name {
+            font-size: 2em;
+            color: #333;
+            margin-bottom: 10px;
+            text-transform: capitalize;
+        }
+        
+        .pokemon-sprite {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+            display: block;
+        }
+        
+        .pokemon-info {
+            margin-top: 20px;
+        }
+        
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .info-label {
+            font-weight: bold;
+            color: #666;
+        }
+        
+        .types {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .type-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            text-transform: capitalize;
+        }
+        
+        .stats {
+            margin-top: 20px;
+        }
+        
+        .stats-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            font-size: 0.9em;
+        }
+        
+        .stat-name {
+            text-transform: capitalize;
+            color: #666;
+        }
+        
+        .form-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .battle-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 50px;
+            font-size: 1.3em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .battle-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .battle-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        input[type="radio"] {
+            display: none;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            transition: background 0.3s;
+        }
+        
+        .back-link:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .dice-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        
+        .dice-overlay.show {
+            display: flex;
+        }
+        
+        .dice-container {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .dice {
+            width: 120px;
+            height: 120px;
+            background: white;
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 70px;
+            box-shadow: 0 15px 40px rgba(255, 255, 255, 0.3);
+            animation: rollDice 0.9s infinite;
+        }
+        
+        @keyframes rollDice {
+            0%, 100% { 
+                transform: rotate(0deg) translateY(0) scale(1);
+            }
+            25% { 
+                transform: rotate(90deg) translateY(-15px) scale(1.1);
+            }
+            50% { 
+                transform: rotate(180deg) translateY(0) scale(1);
+            }
+            75% { 
+                transform: rotate(270deg) translateY(-15px) scale(1.1);
+            }
+        }
+        
+        .dice-text {
+            color: white;
+            font-size: 2em;
+            margin-top: 30px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="dice-overlay" id="diceOverlay">
+        <div class="dice-container">
+            <div class="dice">🎲</div>
+            <div class="dice">🎲</div>
+            <div class="dice">🎲</div>
+        </div>
+        <div class="dice-text">Battling...</div>
+    </div>
+    
+    <div class="container">
+        <h1>⚔️ Choose Your Pokemon ⚔️</h1>
+        
+        <form method="POST" action="{{ url_for('battle') }}" id="battleForm">
+            <div class="pokemon-grid">
+                <label for="pokemon1" class="pokemon-card" onclick="selectCard(1)">
+                    <input type="radio" name="choice" value="1" id="pokemon1" required>
+                    <div class="pokemon-header">
+                        <div class="pokemon-name">{{ pokemon1.name }}</div>
+                        <img src="{{ pokemon1.sprites.front_default }}" alt="{{ pokemon1.name }}" class="pokemon-sprite">
+                    </div>
+                    <div class="pokemon-info">
+                        <div class="info-row">
+                            <span class="info-label">ID:</span>
+                            <span>{{ pokemon1.id }}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Height:</span>
+                            <span>{{ pokemon1.height }} dm</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Weight:</span>
+                            <span>{{ pokemon1.weight }} hg</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Types:</span>
+                            <div class="types">
+                                {% for type in pokemon1.types %}
+                                <span class="type-badge">{{ type }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="stats">
+                            <div class="stats-title">Base Stats:</div>
+                            {% for stat_name, stat_value in pokemon1.stats.items() %}
+                            <div class="stat-row">
+                                <span class="stat-name">{{ stat_name.replace('-', ' ') }}:</span>
+                                <span>{{ stat_value }}</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </label>
+                
+                <label for="pokemon2" class="pokemon-card" onclick="selectCard(2)">
+                    <input type="radio" name="choice" value="2" id="pokemon2" required>
+                    <div class="pokemon-header">
+                        <div class="pokemon-name">{{ pokemon2.name }}</div>
+                        <img src="{{ pokemon2.sprites.front_default }}" alt="{{ pokemon2.name }}" class="pokemon-sprite">
+                    </div>
+                    <div class="pokemon-info">
+                        <div class="info-row">
+                            <span class="info-label">ID:</span>
+                            <span>{{ pokemon2.id }}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Height:</span>
+                            <span>{{ pokemon2.height }} dm</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Weight:</span>
+                            <span>{{ pokemon2.weight }} hg</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Types:</span>
+                            <div class="types">
+                                {% for type in pokemon2.types %}
+                                <span class="type-badge">{{ type }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="stats">
+                            <div class="stats-title">Base Stats:</div>
+                            {% for stat_name, stat_value in pokemon2.stats.items() %}
+                            <div class="stat-row">
+                                <span class="stat-name">{{ stat_name.replace('-', ' ') }}:</span>
+                                <span>{{ stat_value }}</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </label>
+            </div>
+            
+            <div class="form-container">
+                <button type="submit" class="battle-btn">Start Battle ⚔️</button>
+            </div>
+        </form>
+        
+        <div style="text-align: center;">
+            <a href="{{ url_for('index') }}" class="back-link">← Back to Home</a>
+        </div>
+    </div>
+    
+    <script>
+        function selectCard(num) {
+            // Remove selected class from all cards
+            document.querySelectorAll('.pokemon-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked card
+            event.currentTarget.classList.add('selected');
+            
+            // Check the radio button
+            document.getElementById('pokemon' + num).checked = true;
+        }
+        
+        document.getElementById('battleForm').addEventListener('submit', function(e) {
+            // Check if a pokemon is selected
+            const selected = document.querySelector('input[name="choice"]:checked');
+            if (selected) {
+                document.getElementById('diceOverlay').classList.add('show');
+            }
+        });
+    </script>
+</body>
+</html>
+
