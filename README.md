@@ -4,6 +4,7 @@
 - Member 1 - Alla
 - Member 2 - Matvei
 - Member 3 - Roman
+- Member 4 - Viktors
 
 ## Project Description
 Poken Casino is a simple and fun game where the player selects a Pokémon to battle against the casino’s randomly chosen Pokémon. The outcome of each battle is determined by comparing the Pokémon’s base stats, and points are awarded to the winner.
